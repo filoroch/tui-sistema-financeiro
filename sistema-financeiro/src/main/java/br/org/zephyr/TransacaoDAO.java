@@ -6,7 +6,7 @@ import java.util.List;
 public class TransacaoDAO {
     private final List<Transacao> transacoes;
 
-    public TransacaoDAO(List<Transacao> _transacoes) {
+    public TransacaoDAO() {
         this.transacoes = new ArrayList();
     }
     

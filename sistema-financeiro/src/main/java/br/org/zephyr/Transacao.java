@@ -5,12 +5,20 @@ import java.time.LocalDate;
  * Representa uma transação do mundo real identificada por Id, tendo uma descrição, um valor, uma data de criação e um tipo de transação associado
  */ 
 public class Transacao {
-    private int id;
+    private static int id;
     private String descricao;
     private Double valor;
     private LocalDate createdAt;
     private TipoTransacao tipoTransacao;
-    
+
+    public Transacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao) {
+        this.id = id++;
+        this.descricao = _descricao;
+        this.valor = _valor;
+        this.createdAt = LocalDate.now();
+        this.tipoTransacao = _tipoTransacao;
+    }
+
     public int getId() {
         return id;
     }
@@ -35,4 +43,11 @@ public class Transacao {
     public void setTipoTransacao(TipoTransacao tipoTransacao) {
         this.tipoTransacao = tipoTransacao;
     }
+
+    @Override
+    public String toString() {
+        return "Transacão Nº: " + id + "\tdescricao: " + descricao + "\tvalor: " + valor + "\tgerado em :" + createdAt
+                + "\ttipo: " + tipoTransacao;
+    }
+    
 }
