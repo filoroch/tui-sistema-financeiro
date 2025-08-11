@@ -1,0 +1,30 @@
+{
+  "name": "Java TUI/JLine DevContainer",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "jdkDistro": "amzn",
+      "installMaven": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/zsh:1": {},
+    "ghcr.io/devcontainers/features/curl:1": {},
+    "ghcr.io/devcontainers/features/htop:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  "containerEnv": {
+    "LANG": "en_US.UTF-8",
+    "TERM": "xterm-256color"
+  },
+  "postCreateCommand": "mvn clean install"
+}
