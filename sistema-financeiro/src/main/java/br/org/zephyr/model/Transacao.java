@@ -1,4 +1,4 @@
-package br.org.zephyr;
+package br.org.zephyr.model;
 
 import java.time.LocalDate;
 import java.util.UUID;

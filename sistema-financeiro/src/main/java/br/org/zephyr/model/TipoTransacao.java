@@ -1,4 +1,4 @@
-package br.org.zephyr;
+package br.org.zephyr.model;
 
 public enum TipoTransacao {
     ENTRADA(1),
