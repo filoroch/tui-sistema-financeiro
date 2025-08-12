@@ -3,20 +3,23 @@ package br.org.zephyr;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransacaoDAO {
+public class Conta {
     private final List<Transacao> transacoes;
 
-    public TransacaoDAO() {
+    public Conta() {
         this.transacoes = new ArrayList();
     }
-    
     /** Lista todas as transações disponiveis
     */
     public void listarTransacoes()
     {
+        if (transacoes != null || transacoes.isEmpty())
         transacoes.forEach(
             t -> System.out.println(t)
         );
+        else {
+            System.err.println("");
+        };
     }
 
     /** 
@@ -30,7 +33,7 @@ public class TransacaoDAO {
 
 
     /** Recebe um Id, uma descrição e um tipo de transação e modifica o objeto Transação original
-     * @param Id usado para achar a Transação
+     * @param _id usado para achar a Transação
      * @param _novaDescricao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
      * @param _novoTipoTransacao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
     */

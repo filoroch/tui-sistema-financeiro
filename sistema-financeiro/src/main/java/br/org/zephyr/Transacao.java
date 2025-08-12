@@ -1,25 +1,27 @@
 package br.org.zephyr;
 
 import java.time.LocalDate;
+import java.util.UUID;
+
 /**
  * Representa uma transação do mundo real identificada por Id, tendo uma descrição, um valor, uma data de criação e um tipo de transação associado
  */ 
 public class Transacao {
-    private static int id;
+    private UUID id;
     private String descricao;
     private Double valor;
     private LocalDate createdAt;
     private TipoTransacao tipoTransacao;
 
     public Transacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao) {
-        this.id = id++;
+        this.id = UUID.randomUUID();
         this.descricao = _descricao;
         this.valor = _valor;
         this.createdAt = LocalDate.now();
         this.tipoTransacao = _tipoTransacao;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
     public String getDescricao() {
@@ -46,8 +48,11 @@ public class Transacao {
 
     @Override
     public String toString() {
-        return "Transacão Nº: " + id + "\tdescricao: " + descricao + "\tvalor: " + valor + "\tgerado em :" + createdAt
-                + "\ttipo: " + tipoTransacao;
+        return "Transacao: " + id + " {"
+                + "\n\tdescricao: " + descricao
+                + "\n\tvalor: " + valor
+                + "\n\tcreatedAt: " + createdAt
+                + "\n\ttipoTransacao: " + tipoTransacao +
+                "\n}";
     }
-    
 }
