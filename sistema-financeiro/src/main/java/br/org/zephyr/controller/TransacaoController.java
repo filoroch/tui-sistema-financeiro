@@ -7,13 +7,21 @@ import java.util.UUID;
 import br.org.zephyr.model.TipoTransacao;
 import br.org.zephyr.model.Transacao;
 
-public class TransacaoDAO {
+public class TransacaoController {
     private final List<Transacao> transacoes;
 
-    public TransacaoDAO() {
+    public TransacaoController() {
         this.transacoes = new ArrayList();
     }
-    
+    // _tipoTransacao precisa ser validado na view
+    public Transacao criarTransacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao)
+    {
+        //TipoTransacao novoTipoTransacao;
+        //novoTipoTransacao = _tipoTransacao == 1 ? TipoTransacao.ENTRADA : TipoTransacao.SAIDA;
+
+        Transacao novaTransacao;
+        return novaTransacao = new Transacao(_descricao, _valor, _tipoTransacao);
+    }
     /** Lista todas as transações disponiveis
     */
     public void listarTransacoes()
@@ -34,7 +42,7 @@ public class TransacaoDAO {
 
 
     /** Recebe um Id, uma descrição e um tipo de transação e modifica o objeto Transação original
-     * @param Id usado para achar a Transação
+     * @param _id usado para achar a Transação
      * @param _novaDescricao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
      * @param _novoTipoTransacao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
     */
@@ -51,5 +59,13 @@ public class TransacaoDAO {
     }
     public void excluirTransacao(int _id){
         transacoes.remove(_id);
+    }
+    public Transacao bucarTransacao (UUID _id)
+    {
+        Transacao transacaoBuscada = transacoes.stream()
+                                                .filter(t -> t.getId().equals(_id))
+                                                .findFirst()
+                                                .orElse(null);
+        return transacaoBuscada;
     }
 }

@@ -14,6 +14,13 @@ public class Transacao {
     private TipoTransacao tipoTransacao;
 
     public Transacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao) {
+        if (_descricao == null || _valor == null || _tipoTransacao == null){
+            throw new IllegalArgumentException("Os parametros descrição, valor e tpo de transação não podem ser nulos/vazioz");
+        }
+        if (_valor < 0){
+            throw new IllegalArgumentException("O valor da transação não pode ser nulo");
+        }
+
         this.id = UUID.randomUUID();
         this.descricao = _descricao;
         this.valor = _valor;
