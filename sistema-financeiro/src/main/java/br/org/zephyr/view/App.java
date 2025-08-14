@@ -1,5 +1,6 @@
 package br.org.zephyr.view;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -20,7 +21,6 @@ public class App
 
         do {
             try {
-                // TODO: Criar um menu iterativo, tirar a responsabilidade de instanciar as classes manualmente
                 switch (userMenu) {
                     case 0:
                         System.out.println("\nSISTEMA FINANCEIRO \nEscolha a opção desejada: \n1. Visualizar transações\n2. Adicionar uma nova transação\n3. Editar uma transação\n");
@@ -56,13 +56,13 @@ public class App
                         System.out.println("\n-> 3. Editar uma transação");
                         System.out.println("\tDigite o ID da transação\n");
                         int indice = scanner.nextInt();
+                        scanner.nextLine();
 
                         controller.buscarTransacao(indice);
 
                         System.out.println("\tDigite nos campos que deseja editar abaixo ou deixe em branco oque deseja manter");
                         System.out.println("Digite a nova descrição\n");
-                        String novaDescricao = scanner.next();
-                        scanner.nextLine();
+                        String novaDescricao = scanner.nextLine();
 
                         System.out.println("Digite o novo valor");
                         Double novoValor = scanner.nextDouble();
@@ -85,7 +85,7 @@ public class App
                         break;
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new InputMismatchException("Scanner esta recebenod algum valor errado. olha ai" + e);
             }
         } while (isActive != false);{}
     }
