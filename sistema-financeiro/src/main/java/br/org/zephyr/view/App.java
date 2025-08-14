@@ -5,7 +5,8 @@ import java.util.UUID;
 
 import br.org.zephyr.model.TipoTransacao;
 import br.org.zephyr.model.Transacao;
-import br.org.zephyr.service.TransacaoController;
+import br.org.zephyr.controller.TransacaoController;
+import br.org.zephyr.service.TransacaoService;
 
 public class App 
 {
@@ -15,6 +16,7 @@ public class App
         int userMenu = 0;
         TransacaoController controller = new TransacaoController();
         Scanner scanner = new Scanner(System.in);
+        controller.criarTransacao("Pastel", 11.50, 2 );
 
         do {
             try {
@@ -28,20 +30,13 @@ public class App
                         System.out.println("\n-> 1. Visualizar transações\n");
                         controller.listarTransacoes();
 
-                        System.out.println("\nDeseja voltar ao menu inicial? \n1. Sim\n2. Não");
-                        userMenu = scanner.nextInt();
+                        System.out.println("\nVoltando ao menu");
+                        userMenu = 0;
                         break;
                     case 2:
                         System.out.println("\n-> 2. Adicionar uma nova transação");
                         System.out.println("A transação é uma entrada, ou saida?\nDigite 1. Entrada ou 2. Saida");
-                        int refTransacao = scanner.nextInt();
-                        TipoTransacao _tipoTransacao = null;
-
-                        if (refTransacao == 1) {
-                            _tipoTransacao = TipoTransacao.ENTRADA;
-                        } else {
-                            _tipoTransacao = TipoTransacao.SAIDA;
-                        }
+                        int _tipoTransacao = scanner.nextInt();
 
                         System.out.println("\nDigite a descrição da transação");
                         String _descricaoTransacao = scanner.next();
@@ -49,10 +44,7 @@ public class App
                         System.out.println("\nDigite o valor da transação");
                         Double _valorTransacao = scanner.nextDouble();
 
-                        Transacao transacao = controller.criarTransacao(_descricaoTransacao, _valorTransacao, _tipoTransacao);
-
-                        controller.adicionarTransacao(transacao);
-                        System.out.println("\n" + transacao.toString());
+                        controller.criarTransacao(_descricaoTransacao, _valorTransacao, _tipoTransacao);
 
                         System.out.println("\nDeseja voltar ao menu inicial? \n1. Sim\n2. Não");
                         userMenu = scanner.nextInt();
@@ -60,12 +52,32 @@ public class App
 
                         break;
                     case 3:
+                        // TODO: Corrigir o bug de não atualizar a descrição;
                         System.out.println("\n-> 3. Editar uma transação");
-                        System.out.println("\tDigite o UUID ou o indice da transação\n");
-                        String indice = scanner.next();
-                        UUID indiceT = UUID.fromString(indice);
-                        Transacao updateTransacao = controller.bucarTransacao(indiceT);
-                        updateTransacao.toString();
+                        System.out.println("\tDigite o ID da transação\n");
+                        int indice = scanner.nextInt();
+
+                        controller.buscarTransacao(indice);
+
+                        System.out.println("\tDigite nos campos que deseja editar abaixo ou deixe em branco oque deseja manter");
+                        System.out.println("Digite a nova descrição\n");
+                        String novaDescricao = scanner.next();
+                        scanner.nextLine();
+
+                        System.out.println("Digite o novo valor");
+                        Double novoValor = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        System.out.println("\t\tDigite o novo tipo de transferencia");
+                        int novoTipoTranserencia = scanner.nextInt();
+                        scanner.nextLine();
+
+                        controller.editarTransacao(indice, novaDescricao, novoValor, novoTipoTranserencia);
+                        controller.buscarTransacao(indice);
+
+                        System.out.println("\nDeseja voltar ao menu inicial? \n1. Sim\n2. Não");
+                        userMenu = scanner.nextInt();
+                        userMenu = userMenu == 2 ? 4 : 0;
                         break;
                     default:
                         System.out.println("Saindo...........");

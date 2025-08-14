@@ -17,13 +17,13 @@ import br.org.zephyr.service.TransacaoService;
 */
 public class TransacaoController {
     private final TransacaoService service = new TransacaoService();
-    // TODAS AS TRANSACOES
+    /**
+     * Lista todas as transações. Não recebe parametros
+     */
     public void listarTransacoes()
     {
-        service.listarTransacoes().forEach(t -> {
-            System.out.println(t.toString());
-        });;
-    };
+        service.listarTransacoes().forEach(t -> System.out.println(t.toString()));
+    }
     // TRANSAÇOES DE UMA DATA ESPECIFICA
     public void listarTransacoes(LocalDate _data)
     {
@@ -35,7 +35,7 @@ public class TransacaoController {
         } else {
             filtradas.forEach(t -> System.out.println(t));
         }
-    };
+    }
 
     public void listarTransacoes(LocalDate _dataInicial, LocalDate _dataFinal)
     {
@@ -120,9 +120,10 @@ public class TransacaoController {
         if (resultado == null) {
             System.out.println("Não existe uma transação com esse ID");
         } else {
-            System.out.println("O resultado da busca por " + _idTransacao + "é:");
-            resultado.toString();
+            System.out.println("O resultado da busca por " + _idTransacao + " é:");
+            System.out.println(resultado.toString());
         }
+
     };
     // POR DESCRICAO
     public void buscarTransacao(String _descricaoTransacao)
