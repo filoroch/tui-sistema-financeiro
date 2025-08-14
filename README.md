@@ -1,7 +1,9 @@
 # Sistema Financeiro TUI
 ## Descrição
 Um sistema de gerenciamento financeiro simples com interface de terminal (TUI) usando JLine para Java.
-
+## Glossario
+- MVC -> Padrão arquitetural monolitico de desenvolvimento onde se separa dados (models, repository), acesso a dados e logica (controller, DAOs, DTOs) e renderização e visualização de dados (views)
+- Transação -> Entidade principal do sistema. Representa uma transação bancaria com id, descrição, valor, data de criação e tipo da transação.
 ## Estrutura do Projeto
 ```
 src/
@@ -64,3 +66,4 @@ namespace view {
 
 ### ✅ Interface JLine
 - Menu interativo no terminal
+## Como rodar o projeto
