@@ -3,9 +3,9 @@ package br.org.zephyr.view;
 import java.util.Scanner;
 import java.util.UUID;
 
-import br.org.zephyr.controller.TransacaoController;
 import br.org.zephyr.model.TipoTransacao;
 import br.org.zephyr.model.Transacao;
+import br.org.zephyr.service.TransacaoController;
 
 public class App 
 {

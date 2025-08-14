@@ -1,17 +1,17 @@
 package br.org.zephyr.model;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * Representa uma transação do mundo real identificada por Id, tendo uma descrição, um valor, uma data de criação e um tipo de transação associado
  */ 
 public class Transacao {
-    private UUID id;
+    private int id;
+    private static int nextId = 1;
     private String descricao;
     private Double valor;
     private LocalDate createdAt;
-    private TipoTransacao tipoTransacao;
+    private TipoTransacao TIPO_TRANSAÇÂO;
 
     public Transacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao) {
         if (_descricao == null || _valor == null || _tipoTransacao == null){
@@ -21,14 +21,14 @@ public class Transacao {
             throw new IllegalArgumentException("O valor da transação não pode ser nulo");
         }
 
-        this.id = UUID.randomUUID();
+        this.id = nextId;
         this.descricao = _descricao;
         this.valor = _valor;
         this.createdAt = LocalDate.now();
-        this.tipoTransacao = _tipoTransacao;
+        this.TIPO_TRANSAÇÂO = _tipoTransacao;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
     public String getDescricao() {
@@ -47,10 +47,10 @@ public class Transacao {
         return createdAt;
     }
     public TipoTransacao getTipoTransacao() {
-        return tipoTransacao;
+        return TIPO_TRANSAÇÂO;
     }
     public void setTipoTransacao(TipoTransacao tipoTransacao) {
-        this.tipoTransacao = tipoTransacao;
+        this.TIPO_TRANSAÇÂO = tipoTransacao;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Transacao {
                 + "\n\tdescricao: " + descricao
                 + "\n\tvalor: " + valor
                 + "\n\tcreatedAt: " + createdAt
-                + "\n\ttipoTransacao: " + tipoTransacao +
+                + "\n\ttipoTransacao: " + TIPO_TRANSAÇÂO +
                 "\n}";
     }
 }

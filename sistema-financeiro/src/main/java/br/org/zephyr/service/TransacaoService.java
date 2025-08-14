@@ -1,40 +1,33 @@
-package br.org.zephyr.controller;
+package br.org.zephyr.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import br.org.zephyr.model.TipoTransacao;
 import br.org.zephyr.model.Transacao;
 
-public class TransacaoController {
+/**
+ * O papel dessa classe é fornecer uma forma de acessar um modelo de forma segura.
+ * Os srvices encapsulam a logca basica de CREATE, READ, UPDATE E DELETE */ 
+public class TransacaoService {
     private final List<Transacao> transacoes;
 
-    public TransacaoController() {
+    public TransacaoService() {
         this.transacoes = new ArrayList();
     }
-    // _tipoTransacao precisa ser validado na view
+
     public Transacao criarTransacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao)
     {
-        //TipoTransacao novoTipoTransacao;
-        //novoTipoTransacao = _tipoTransacao == 1 ? TipoTransacao.ENTRADA : TipoTransacao.SAIDA;
-
-        Transacao novaTransacao;
-        return novaTransacao = new Transacao(_descricao, _valor, _tipoTransacao);
+        Transacao novaTransacao = new Transacao(_descricao, _valor, _tipoTransacao);
+        transacoes.add(novaTransacao);
+        return novaTransacao;
     }
-    /** Lista todas as transações disponiveis
-    */
-    public void listarTransacoes()
+    
+    // Lista todas as transações disponiveis
+    public List<Transacao> listarTransacoes()
     {
-        transacoes.forEach(
-            t -> System.out.println(t)
-        );
+        return transacoes;
     }
 
-    /** 
-     * Recebe uma transação e adiciona ao final da lista de transações
-     * @param _transacao que representa um objeto concreto de uma transação
-    */
     public void adicionarTransacao(Transacao _transacao)
     {
         transacoes.add(_transacao);
@@ -46,7 +39,7 @@ public class TransacaoController {
      * @param _novaDescricao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
      * @param _novoTipoTransacao opcional. Se vazio, vai ser permitido o valor original, se não, passado o valor da referencia
     */
-    public void editarTransacao(UUID _id, String _novaDescricao, TipoTransacao _novoTipoTransacao)
+    public void editarTransacao(int _id, String _novaDescricao, TipoTransacao _novoTipoTransacao)
     {
         Transacao _novaTransação = transacoes.stream().filter(t -> t.getId() == _id).findFirst().orElse(null);
         _novaDescricao = _novaDescricao.isEmpty() ? _novaTransação.getDescricao() : _novaDescricao;
@@ -60,10 +53,10 @@ public class TransacaoController {
     public void excluirTransacao(int _id){
         transacoes.remove(_id);
     }
-    public Transacao bucarTransacao (UUID _id)
+    public Transacao bucarTransacao (int _id)
     {
         Transacao transacaoBuscada = transacoes.stream()
-                                                .filter(t -> t.getId().equals(_id))
+                                                .filter(t -> t.getId() == _id)
                                                 .findFirst()
                                                 .orElse(null);
         return transacaoBuscada;
