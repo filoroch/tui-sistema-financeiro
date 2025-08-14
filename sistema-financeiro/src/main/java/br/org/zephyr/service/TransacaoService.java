@@ -9,11 +9,8 @@ import br.org.zephyr.model.Transacao;
  * O papel dessa classe é fornecer uma forma de acessar um modelo de forma segura.
  * Os srvices encapsulam a logca basica de CREATE, READ, UPDATE E DELETE */ 
 public class TransacaoService {
-    private final List<Transacao> transacoes;
-
-    public TransacaoService() {
-        this.transacoes = new ArrayList();
-    }
+    // IDEALMENTE AQUI TERIA DE TER UMA CONEXÂO COM BANCO PRA PERSISTENCIA
+    private final List<Transacao> transacoes = new ArrayList<>();
 
     public Transacao criarTransacao(String _descricao, Double _valor, TipoTransacao _tipoTransacao)
     {
