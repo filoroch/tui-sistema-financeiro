@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import br.org.zephyr.model.TipoTransacao;
 import br.org.zephyr.model.Transacao;
@@ -64,7 +65,7 @@ public class TransacaoController {
     };
     // Sobrecarga
     public void editarTransacao(int _id, String _descricaoAtualizada){
-        
+
     };
     public void editarTransacao(int _id, String _descricaoAtualizada, Double _valorAtualizado){};
     public void editarTransacao(int _id, String _descricaoAtualizada, Double _valorAtualizado, int _tipoTransacaoAtualizado){};
@@ -74,9 +75,24 @@ public class TransacaoController {
     public void excluirTransacao(){};
     
     // POR ID
-    public void buscarTransacao(int _idTransacao){};
+    public void buscarTransacao(int _idTransacao)
+    {
+        Transacao resultado = _Service.bucarTransacao(_idTransacao);
+        
+        if (resultado == null) {
+            System.out.println("Não existe uma transação com esse ID");
+        } else {
+            System.out.println("O resultado da busca por " + _idTransacao + "é:");
+            resultado.toString();
+        }
+    };
     // POR DESCRICAO
-    public void buscarTransacao(String _descricaoTransacao){};
+    public void buscarTransacao(String _descricaoTransacao)
+    {
+        Optional<Transacao> resultado =  _Service.listarTransacoes().stream().filter(t -> t.getDescricao().equalsIgnoreCase(_descricaoTransacao)).findFirst();
+        
+        resultado.get().toString();
+    };
     // POR DATA
     public void buscarTransacao(LocalDate _dataTransacao){};
 
