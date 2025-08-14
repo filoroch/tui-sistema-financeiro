@@ -7,27 +7,148 @@
 
 ## Descrição
 
-Sistema financeiro com interface de linha de comando (TUI) desenvolvido em Java, utilizando a biblioteca JLine para criar uma experiência de terminal interativa e amigável. O sistema permite gerenciar transações financeiras com operações CRUD, importação de dados via CSV e persistência em banco de dados relacional.
+Sistema financeiro com interface de linha de comando (TUI) desenvolvido em Java, utilizando a biblioteca JLine para criar uma experiência de terminal interativa e amigável. O sistema implementa o padrão arquitetural MVC (Model-View-Controller), fornecendo uma separação clara de responsabilidades entre as camadas de apresentação, lógica de negócio e modelo de dados.
+
+O sistema permite gerenciar transações financeiras com operações CRUD completas, interface de terminal avançada com navegação intuitiva, e persistência robusta de dados. A arquitetura MVC facilita a manutenção, testabilidade e extensibilidade do código.
 
 ## Objetivo
 
 Construir um projeto básico de sistema financeiro com Java usando a biblioteca JLine para ter um shell bonitinho que permita:
-
 - Gerenciamento completo de transações financeiras
-- Interface de linha de comando intuitiva e responsiva
-- Importação em lote de dados bancários
-- Persistência robusta com banco de dados relacional
+- Interface de linha de comando intuitiva e responsiva  
+- Arquitetura MVC bem estruturada e organizizada
+- Código limpo, testável e de fácil manutenção
 
 ### Glossário
 - **Transação** → Ato de recebimento ou gasto de dinheiro. Ex: Compra de celular, recebimento de salário
+- **MVC** → Model-View-Controller, padrão arquitetural que separa a aplicação em três camadas interconectadas
+
+## Arquitetura
+
+O sistema segue o padrão **MVC (Model-View-Controller)** com a seguinte organização:
+
+- **Model** (`br.org.zephyr.model`): Contém as entidades de domínio e regras de negócio
+- **View** (`br.org.zephyr.view`): Responsável pela interface com o usuário (TUI)
+- **Controller** (`br.org.zephyr.controller`): Gerencia a lógica de aplicação e coordena Model e View
+
+Esta separação garante baixo acoplamento, alta coesão e facilita a manutenibilidade do código.
+
+## Fluxo Básico
+
+```mermaid
+flowchart TD
+    A["🚀 Usuário inicia aplicação"] --> B["📋 App.main() - Menu Principal"]
+    B --> C["1️⃣ Listar Transações"]
+    B --> D["2️⃣ Adicionar Transação"]
+    B --> E["3️⃣ Editar Transação"]
+    B --> F["4️⃣ Excluir Transação"]
+    B --> G["0️⃣ Sair"]
+    
+    C --> H["📞 TransacaoController.listarTransacoes()"]
+    H --> I["📊 Exibe lista formatada"]
+    I --> B
+    
+    D --> J["📞 TransacaoController.adicionarTransacao()"]
+    J --> K["📝 Coleta dados do usuário"]
+    K --> L["💾 Cria nova Transacao"]
+    L --> M["✅ Salva na List<Transacao>"]
+    M --> B
+    
+    E --> N["📞 TransacaoController.editarTransacao()"]
+    N --> O["🔍 Busca transação por ID"]
+    O --> P["✏️ Modifica dados"]
+    P --> Q["💾 Atualiza na List<Transacao>"]
+    Q --> B
+    
+    F --> R["📞 TransacaoController.excluirTransacao()"]
+    R --> S["🔍 Busca transação por ID"]
+    S --> T["❌ Remove da List<Transacao>"]
+    T --> B
+    
+    G --> U["👋 Encerra aplicação"]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style H fill:#e8f5e8
+    style J fill:#e8f5e8
+    style N fill:#e8f5e8
+    style R fill:#e8f5e8
+```
+
+## Estrutura das Classes
+
+```mermaid
+classDiagram
+    class App {
+        +main(String[] args) void
+        +exibirMenu() void
+        +processarOpcao(int opcao) void
+        -scanner: Scanner
+        -controller: TransacaoController
+    }
+    
+    class TransacaoController {
+        -transacoes: List~Transacao~
+        +listarTransacoes() void
+        +adicionarTransacao() void
+        +editarTransacao(Long id) void
+        +excluirTransacao(Long id) void
+        +buscarPorId(Long id) Transacao
+        +obterTodasTransacoes() List~Transacao~
+    }
+    
+    class Transacao {
+        -id: Long
+        -descricao: String
+        -valor: BigDecimal
+        -dataCreated: LocalDateTime
+        -tipo: TipoTransacao
+        +getId() Long
+        +getDescricao() String
+        +getValor() BigDecimal
+        +getDataCreated() LocalDateTime
+        +getTipo() TipoTransacao
+        +setId(Long id) void
+        +setDescricao(String descricao) void
+        +setValor(BigDecimal valor) void
+        +setTipo(TipoTransacao tipo) void
+    }
+    
+    class TipoTransacao {
+        <<enumeration>>
+        ENTRADA
+        SAIDA
+        INVESTIMENTO
+    }
+    
+    %% Relacionamentos MVC
+    App ||--|| TransacaoController : "controla via"
+    TransacaoController ||--o{ Transacao : "gerencia coleção de"
+    Transacao ||--|| TipoTransacao : "possui tipo"
+    
+    %% Anotações de camada
+    App : <<View Layer>>
+    TransacaoController : <<Controller Layer>>
+    Transacao : <<Model Layer>>
+    TipoTransacao : <<Model Layer>>
+    
+    %% Estilos
+    classDef viewStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef controllerStyle fill:#e8f5e8,stroke:#388e3c,stroke-width:2px  
+    classDef modelStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    
+    class App viewStyle
+    class TransacaoController controllerStyle
+    class Transacao modelStyle
+    class TipoTransacao modelStyle
+```
 
 ## Tecnologias
 
 - **Java 17+** - Linguagem de programação principal
 - **JLine 3.x** - Biblioteca para interface de linha de comando avançada
-- **OpenCSV** - Biblioteca para importação/exportação de arquivos CSV
-- **H2 Database** - Banco de dados relacional embarcado
 - **Maven** - Gerenciador de dependências e build
+- **JUnit** - Framework de testes unitários
 - **Dev Containers** - Ambiente de desenvolvimento containerizado
 
 ## Requisitos
@@ -40,208 +161,98 @@ Construir um projeto básico de sistema financeiro com Java usando a biblioteca 
 
 O Shell precisa ser capaz de:
 - Permitir a criação, visualização, atualização e exclusão de Transações (CRUD)
-- Permitir usar um export das transações dos bancos para criar uma série de transações de uma única vez
-- Puxar as transações de um banco de dados relacional
 - Interface interativa com navegação por menus
+- Validação de dados de entrada
+- Armazenamento em memória com List<Transacao>
 
-## Fluxo Básico
+## Como Executar
 
-```mermaid
-flowchart TD
-    A[Usuário inicia o shell] --> B[Menu Principal]
-    B --> C[1. Visualizar transações]
-    B --> D[2. Criar transação]
-    B --> E[3. Editar transação]
-    B --> F[4. Excluir transação]
-    B --> G[5. Importar CSV]
-    B --> H[6. Sair do Shell]
-    
-    C --> I[Exibe tabela com transações]
-    D --> J[Formulário de criação]
-    E --> K[Seleciona e edita transação]
-    F --> L[Confirma exclusão]
-    G --> M[Carrega arquivo CSV]
-    
-    I --> B
-    J --> N[Salva no banco]
-    K --> N
-    L --> N
-    M --> O[Processa transações em lote]
-    
-    N --> B
-    O --> B
-    H --> P[Encerra aplicação]
-```
-
-## Estrutura das Classes
-
-```mermaid
-classDiagram
-    class Transacao {
-        -Long id
-        -String descricao
-        -BigDecimal valor
-        -LocalDate data
-        -TipoTransacao tipo
-        -String categoria
-        +getId() Long
-        +getDescricao() String
-        +getValor() BigDecimal
-        +getData() LocalDate
-        +getTipo() TipoTransacao
-        +getCategoria() String
-    }
-    
-    class TipoTransacao {
-        <<enumeration>>
-        RECEITA
-        DESPESA
-    }
-    
-    class TransacaoRepository {
-        +save(Transacao) Transacao
-        +findAll() List~Transacao~
-        +findById(Long) Optional~Transacao~
-        +update(Transacao) Transacao
-        +delete(Long) void
-        +findByDateRange(LocalDate, LocalDate) List~Transacao~
-    }
-    
-    class TransacaoService {
-        -TransacaoRepository repository
-        -CSVImportService csvService
-        +criarTransacao(Transacao) Transacao
-        +listarTransacoes() List~Transacao~
-        +buscarPorId(Long) Optional~Transacao~
-        +atualizarTransacao(Transacao) Transacao
-        +excluirTransacao(Long) void
-        +importarCSV(String) List~Transacao~
-    }
-    
-    class CSVImportService {
-        +importarTransacoes(String) List~Transacao~
-        +exportarTransacoes(List~Transacao~) String
-    }
-    
-    class ShellApplication {
-        -TransacaoService service
-        -Terminal terminal
-        -LineReader reader
-        +iniciar() void
-        +exibirMenu() void
-        +processarComando(String) void
-    }
-    
-    Transacao --> TipoTransacao
-    TransacaoService --> TransacaoRepository
-    TransacaoService --> CSVImportService
-    ShellApplication --> TransacaoService
-    TransacaoRepository --> Transacao
-```
-
-## Como Rodar
-
-### Pré-requisitos
-- Java 17+
-- Maven 3.6+
-
-### Execução Local
-
+### Usando Maven
 ```bash
-# Clone o repositório
+# Clonar o repositório
 git clone https://github.com/filoroch/tui-sistema-financeiro.git
 cd tui-sistema-financeiro
 
-# Compile e execute
-mvn clean compile exec:java
+# Compilar o projeto
+mvn clean compile
+
+# Executar a aplicação
+mvn exec:java -Dexec.mainClass="br.org.zephyr.view.App"
 ```
 
 ### Usando Dev Container
+```bash
+# Abrir no VS Code com Dev Containers
+code .
+# Pressionar Ctrl+Shift+P e executar: "Dev Containers: Reopen in Container"
+```
 
-O projeto inclui configuração para Dev Container. Exemplo de configuração:
+## Estrutura do Projeto
 
-```json
-{
-  "name": "Sistema Financeiro Java",
-  "image": "mcr.microsoft.com/devcontainers/java:17-jdk-bookworm",
-  "features": {
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "17",
-      "installMaven": true
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "vscjava.vscode-java-pack",
-        "redhat.vscode-xml"
-      ],
-      "settings": {
-        "java.configuration.runtimes": [
-          {
-            "name": "JavaSE-17",
-            "path": "/usr/local/sdkman/candidates/java/17.0.8-tem"
-          }
-        ]
-      }
-    }
-  },
-  "forwardPorts": [8080],
-  "postCreateCommand": "mvn clean install"
-}
+```
+sistema-financeiro/
+├── src/main/java/br/org/zephyr/
+│   ├── model/
+│   │   ├── Transacao.java      # Entidade principal do sistema
+│   │   └── TipoTransacao.java   # Enum com tipos de transação
+│   ├── controller/
+│   │   └── TransacaoController.java  # Lógica de negócio e CRUD
+│   └── view/
+│       └── App.java            # Interface TUI e ponto de entrada
+├── pom.xml                     # Configuração Maven
+└── README.md                   # Documentação do projeto
 ```
 
 ## Funcionalidades
 
 ### ✅ CRUD de Transações
 - **Create**: Criação de novas transações com validação de dados
-- **Read**: Listagem e visualização de transações com filtros
-- **Update**: Edição de transações existentes
+- **Read**: Listagem e visualização de transações com formatação
+- **Update**: Edição de transações existentes por ID
 - **Delete**: Exclusão segura com confirmação
 
-### ✅ Importação CSV (OpenCSV)
-- Suporte para importação em lote de arquivos CSV
-- Mapeamento automático de colunas
-- Validação e tratamento de erros
-- Formato esperado: `data,descricao,valor,tipo,categoria`
-
-### ✅ Persistência Relacional
-- Banco de dados H2 embarcado
-- Mapeamento objeto-relacional
-- Transações ACID
-- Schema automático na inicialização
-
 ### ✅ Interface JLine
-- Autocompletar de comandos
-- Histórico de comandos
-- Navegação com setas
-- Cores e formatação rica
-- Tabelas formatadas para exibição de dados
+- Menu interativo no terminal
+- Navegação intuitiva com opções numeradas
+- Formatação rica de saída de dados
+- Validação de entrada do usuário
+
+### ✅ Arquitetura MVC
+- Separação clara de responsabilidades
+- Baixo acoplamento entre camadas
+- Código testável e maintível
+- Estrutura organizacional consistente
 
 ## Roadmap
 
-- [x] Construir as classes base
-- [x] Aplicar as técnicas do JLine
+- [x] Construir as classes base do MVC
+- [x] Implementar operações CRUD básicas
+- [x] Criar interface TUI com menu
+- [ ] Adicionar persistência com H2 Database
 - [ ] Implementar validações avançadas
+- [ ] Adicionar importação/exportação CSV
+- [ ] Criar testes unitários abrangentes
 - [ ] Adicionar suporte a múltiplas contas
+- [ ] Implementar filtros e buscas avançadas
 - [ ] Criar relatórios financeiros
-- [ ] Implementar backup automático
-- [ ] Adicionar gráficos ASCII
-- [ ] Suporte a diferentes moedas
-- [ ] Integração com APIs bancárias
-- [ ] Sistema de categorização automática
-- [ ] Exportação para múltiplos formatos
-- [ ] Interface web complementar
+- [ ] Adicionar gráficos ASCII para visualização
+
+## Contribuindo
+
+1. Fork o projeto
+2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
 ## Links Úteis
 
 - [JLine Documentation](https://github.com/jline/jline3/wiki)
-- [OpenCSV Documentation](http://opencsv.sourceforge.net/)
-- [H2 Database Documentation](https://h2database.com/html/main.html)
 - [Maven Getting Started](https://maven.apache.org/guides/getting-started/)
 - [Java 17 Documentation](https://docs.oracle.com/en/java/javase/17/)
 - [Dev Containers Documentation](https://containers.dev/)
+- [Mermaid Documentation](https://mermaid.js.org/)
 
 ---
 
-**Desenvolvido com ❤️ usando Java e JLine**
+**Desenvolvido com ❤️ usando Java, Maven e JLine**
