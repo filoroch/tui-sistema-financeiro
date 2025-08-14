@@ -1,9 +1,11 @@
 # Sistema Financeiro TUI
 
 ## Descrição
+
 Um sistema de gerenciamento financeiro simples com interface de terminal (TUI) usando JLine para Java.
 
 ## Estrutura do Projeto
+
 ```
 src/
 ├── main/java/br/org/zephyr/
@@ -24,77 +26,58 @@ src/
 
 ```mermaid
 classDiagram
-    package "br.org.zephyr.model" {
-        class Transacao {
-            -Long id
-            -String descricao
-            -BigDecimal valor
-            -LocalDate data
-            -TipoTransacao tipo
-            +getId() Long
-            +setId(Long) void
-            +getDescricao() String
-            +setDescricao(String) void
-            +getValor() BigDecimal
-            +setValor(BigDecimal) void
-            +getData() LocalDate
-            +setData(LocalDate) void
-            +getTipo() TipoTransacao
-            +setTipo(TipoTransacao) void
-        }
-        
-        class TipoTransacao {
-            <<enum>>
-            RECEITA
-            DESPESA
-        }
-    }
-    
-    package "controller" {
-        class TransacaoController {
-            -List~Transacao~ transacoes
-            +adicionarTransacao(Transacao) void
-            +listarTransacoes() List~Transacao~
-            +buscarTransacao(Long) Transacao
-            +atualizarTransacao(Long, Transacao) boolean
-            +removerTransacao(Long) boolean
-        }
-    }
-    
-    package "view" {
-        class App {
-            +main(String[]) void
-            -exibirMenu() void
-            -processarOpcao(int) void
-        }
-    }
-    
-    %% Relacionamentos
-    App --> TransacaoController : uses
-    TransacaoController *-- "*" Transacao : manages
-    Transacao o-- TipoTransacao : enum
+class Transacao{
++UUID id
++String descricao
++Double valor
++LocalDate createdAt
++TipoTransacao tipoTransacao
+}
+class TipoTransacao{<<enumeration>>}
+class TransacaoController{
++List<Transacao> transacoes
++criarTransacao(String,Double,TipoTransacao) Transacao
++listarTransacoes() void
++adicionarTransacao(Transacao) void
++editarTransacao(UUID,String,TipoTransacao) void
++excluirTransacao(int) void
++bucarTransacao(UUID) Transacao
+}
+class App{+main(String[]) void}
+App --> TransacaoController : usa
+TransacaoController *-- Transacao : gerencia
+Transacao o-- TipoTransacao : tipo
+namespace br.org.zephyr.model{Transacao
+TipoTransacao}
+namespace br.org.zephyr.controller{TransacaoController}
+namespace br.org.zephyr.view{App}
 ```
 
 ## Funcionalidades
+
 ### ✅ CRUD de Transações
+
 - **Create**: Criação de novas transações com validação de dados
 - **Read**: Listagem e visualização de transações com formatação
 - **Update**: Edição de transações existentes por ID
 - **Delete**: Exclusão segura com confirmação
 
 ### ✅ Interface JLine
+
 - Menu interativo no terminal
 - Navegação intuitiva com opções numeradas
 - Formatação rica de saída de dados
 - Validação de entrada do usuário
 
 ### ✅ Arquitetura MVC
+
 - Separação clara de responsabilidades
 - Baixo acoplamento entre camadas
 - Código testável e maintível
 - Estrutura organizacional consistente
 
 ## Roadmap
+
 - [x] Construir as classes base do MVC
 - [x] Implementar operações CRUD básicas
 - [x] Criar interface TUI com menu
@@ -108,6 +91,7 @@ classDiagram
 - [ ] Adicionar gráficos ASCII para visualização
 
 ## Contribuindo
+
 1. Fork o projeto
 2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
@@ -115,6 +99,7 @@ classDiagram
 5. Abra um Pull Request
 
 ## Links Úteis
+
 - [JLine Documentation](https://github.com/jline/jline3/wiki)
 - [Maven Getting Started](https://maven.apache.org/guides/getting-started/)
 - [Java 17 Documentation](https://docs.oracle.com/en/java/javase/17/)
