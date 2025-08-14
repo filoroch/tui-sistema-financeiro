@@ -43,14 +43,14 @@ class App{+main(String[]) void}
 App --> TransacaoController : usa
 TransacaoController *-- Transacao : gerencia
 Transacao o-- TipoTransacao : tipo
-namespace br.org.zephyr.model {
+namespace model {
   class Transacao
   class TipoTransacao
 }
-namespace br.org.zephyr.controller {
+namespace controller {
   class TransacaoController
 }
-namespace br.org.zephyr.view {
+namespace view {
   class App
 }
 ```
